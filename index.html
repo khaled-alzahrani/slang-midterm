@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>محاضرة العامية: استمع وراجع</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3f5fa; --surface:#ffffff; --ink:#1c2333; --muted:#5d6680; --line:#dfe3ee;
+  --accent:#3b4cca; --accent-soft:#e6e9fb; --answer:#a85a0c; --answer-soft:#fdf1e3;
+  color-scheme: light;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#121621; --surface:#1b2130; --ink:#e8ebf3; --muted:#9aa3bb; --line:#2c3447;
+  --accent:#8e9bff; --accent-soft:#262d4d; --answer:#f0a75a; --answer-soft:#33281b; color-scheme: dark; } }
+:root[data-theme="dark"]{
+  --bg:#121621; --surface:#1b2130; --ink:#e8ebf3; --muted:#9aa3bb; --line:#2c3447;
+  --accent:#8e9bff; --accent-soft:#262d4d; --answer:#f0a75a; --answer-soft:#33281b; color-scheme: dark; }
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 120px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Tajawal,"Segoe UI",Tahoma,sans-serif;font-size:17px;line-height:1.55}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px 48px}
+header.hero{padding:28px 0 18px}
+.hero h1{font-family:Lexend,Tajawal,sans-serif;direction:ltr;text-align:left;font-size:clamp(28px,7vw,40px);line-height:1.1;margin:0;letter-spacing:-.01em}
+.hero p{margin:8px 0 0;color:var(--muted)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:10px 0;border-bottom:1px solid var(--line)}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{border:0;background:none;color:var(--muted);font:inherit;font-size:14px;padding:6px 12px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.toggle{border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:14px;padding:7px 14px;border-radius:999px;cursor:pointer}
+.toggle[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin-top:10px;padding-bottom:2px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs a{flex:none;text-decoration:none;color:var(--muted);font-size:14px;padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface)}
+.tabs a:hover{color:var(--accent);border-color:var(--accent)}
+h2{font-size:21px;margin:30px 0 4px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
+h2 .en{font-family:Lexend,sans-serif;direction:ltr;font-size:15px;font-weight:400;color:var(--muted)}
+.note{color:var(--muted);font-size:15px;margin:0 0 12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;margin:12px 0;overflow:hidden}
+.row{display:flex;gap:10px;align-items:flex-start;padding:12px 14px}
+.row + .row{border-top:1px dashed var(--line)}
+.row .txt{flex:1;min-width:0}
+.en-text{direction:ltr;text-align:left;font-family:Lexend,sans-serif;font-size:16px;line-height:1.5}
+.q .en-text{font-weight:600}
+.a{background:var(--answer-soft)}
+.a .en-text{color:var(--ink)}
+.tag{font-size:12px;font-family:Lexend,sans-serif;color:var(--muted);direction:ltr;text-align:left;margin-bottom:2px}
+.a .tag{color:var(--answer)}
+.ar-text{margin-top:6px;color:var(--muted);font-size:15.5px;display:flex;gap:8px;align-items:flex-start}
+.ar-text span{flex:1}
+body.no-ar .ar-text{display:none}
+body.hide-a .a .reveal-wrap{filter:blur(6px);user-select:none;cursor:pointer}
+body.hide-a .a.shown .reveal-wrap{filter:none}
+.play{flex:none;width:40px;height:40px;border-radius:50%;border:0;background:var(--accent-soft);color:var(--accent);cursor:pointer;display:grid;place-items:center}
+.a .play{background:var(--surface);color:var(--answer)}
+.play.small{width:30px;height:30px;background:transparent;border:1px solid var(--line);color:var(--muted)}
+.play svg{width:18px;height:18px}
+.play.small svg{width:13px;height:13px}
+.play.on{background:var(--accent);color:#fff}
+.a .play.on{background:var(--answer);color:#fff}
+.speaking{outline:2px solid var(--accent);outline-offset:-2px;border-radius:14px}
+.both{width:100%;border:0;border-top:1px solid var(--line);background:none;color:var(--accent);font:inherit;font-size:14px;padding:9px;cursor:pointer}
+.list .row{align-items:center}
+.list .ar-plain{color:var(--muted);font-size:15.5px}
+.warn{display:none;background:var(--answer-soft);color:var(--answer);padding:10px 14px;border-radius:12px;margin-top:12px;font-size:15px}
+button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion: no-preference){ .play{transition:background .15s} }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <h1>Slang lecture, out loud</h1>
+  <p>اضغط زر التشغيل بجانب أي جملة لتسمعها بالإنجليزي. الجمل العربية لها زر صغير خاص بها.</p>
+  <div class="warn" id="warn">جهازك لا يدعم القراءة الصوتية في هذا المتصفح. جرّب Chrome أو Safari.</div>
+</header>
+<div class="bar">
+  <div class="controls">
+    <div class="seg" role="group" aria-label="السرعة">
+      <button data-rate="0.7">بطيء</button>
+      <button data-rate="0.9">متوسط</button>
+      <button data-rate="1.05">عادي</button>
+    </div>
+    <button class="toggle" id="tAr" aria-pressed="true">الترجمة</button>
+    <button class="toggle" id="tHide" aria-pressed="false">اختبر نفسك</button>
+    <button class="toggle" id="tStop" aria-pressed="false">إيقاف</button>
+  </div>
+  <nav class="tabs" id="tabs"></nav>
+</div>
+<main id="main"></main>
+</div>
+<script>
+const DATA = {"qa": [["1", "What is the lecture about?", "Slang in American English.", "عن ماذا تتكلم المحاضرة؟", "عن العامية في الإنجليزية الأمريكية."], ["1", "What three things does the speaker talk about first?", "What slang is, why people use it, and how it is made.", "ما الأشياء الثلاثة التي تكلم عنها المحاضر أولاً؟", "ما هي العامية، ولماذا يستخدمها الناس، وكيف تُصنع."], ["1", "What is slang?", "New and informal words or phrases. They usually come from groups in society.", "ما هي العامية؟", "كلمات أو عبارات جديدة وغير رسمية، تأتي غالباً من مجموعات في المجتمع."], ["1", "Who makes most slang?", "Young people.", "من يصنع أغلب العامية؟", "الشباب."], ["1", "What does \"I'm pumped up\" or \"I'm psyched\" mean?", "I'm really excited.", "ماذا تعني \"I'm pumped up\" أو \"I'm psyched\"؟", "أنا متحمس جداً."], ["1", "Is slang always nice?", "No. It can be funny with friends, but sometimes it can be rude.", "هل العامية دائماً لطيفة؟", "لا. قد تكون مضحكة مع الأصدقاء، لكنها أحياناً تكون غير مؤدبة."], ["2", "Give one reason people use slang.", "It makes them feel part of a group, like friends who wear the same jacket.", "اذكر سبباً لاستخدام الناس للعامية.", "تجعلهم يشعرون أنهم جزء من مجموعة، مثل أصدقاء يلبسون نفس الجاكيت."], ["2", "What is the \"key point\" the speaker gives?", "People use slang to show they are friendly and relaxed with each other.", "ما \"النقطة المهمة\" التي ذكرها المحاضر؟", "الناس يستخدمون العامية ليظهروا أنهم ودودون ومرتاحون مع بعض."], ["2", "Where is this especially common?", "At work (in the workplace).", "أين يحدث هذا بشكل خاص؟", "في مكان العمل."], ["2", "Give another reason people use slang.", "To make their speech more colorful, or to make an impression.", "اذكر سبباً آخر.", "ليكون كلامهم ممتعاً وملوّناً أكثر، أو ليتركوا انطباعاً عند الآخرين."], ["3", "What is the first way slang is made?", "Giving an old word a new meaning.", "ما الطريقة الأولى لصنع العامية؟", "إعطاء كلمة قديمة معنى جديداً."], ["3", "What does \"wired\" mean?", "Too excited and full of energy, for example after too much coffee.", "ماذا تعني \"wired\"؟", "متحمس زيادة ومليء بالطاقة، مثلاً بعد شرب قهوة كثيرة."], ["3", "What is the second way slang is made?", "Making a completely new word.", "ما الطريقة الثانية؟", "صنع كلمة جديدة تماماً."], ["3", "Where do these new words usually come from?", "From small groups inside a culture (subcultures).", "من أين تأتي هذه الكلمات الجديدة غالباً؟", "من مجموعات صغيرة داخل المجتمع."], ["3", "What does \"bling bling\" mean?", "Shiny jewelry. People first heard it in a hip hop song.", "ماذا تعني \"bling bling\"؟", "مجوهرات لامعة. سمعها الناس أول مرة في أغنية هيب هوب."], ["3", "What is the third way slang is made?", "Borrowing words from another language or culture.", "ما الطريقة الثالثة؟", "استعارة كلمات من لغة أو ثقافة أخرى."], ["3", "Which way is the speaker most interested in?", "The third way: borrowing. He says \"This is what I'm interested in.\"", "أي طريقة يهتم بها المحاضر أكثر؟", "الطريقة الثالثة: الاستعارة. قال: \"هذا ما يهمني\"."], ["3", "Which languages does he mention?", "German, Italian, and Chinese.", "ما اللغات التي ذكرها؟", "الألمانية والإيطالية والصينية."], ["4", "What are the two things that make slang different from person to person?", "Region (where you live) and occupation (your job).", "ما الشيئان اللذان يجعلان العامية تختلف من شخص لآخر؟", "المنطقة (أين تعيش) والمهنة (وظيفتك)."], ["4", "How do people say hello in the South?", "\"Hey, y'all\" (hello, everybody).", "كيف يسلّم الناس في الجنوب؟", "\"Hey, y'all\" وتعني: مرحباً يا جماعة."], ["4", "How do people say hello in California?", "\"What's up, guys?\"", "كيف يسلّمون في كاليفورنيا؟", "\"What's up, guys?\" وتعني: وش الأخبار يا شباب؟"], ["4", "What happens to some job slang?", "Over time, everyone starts using it. It becomes general slang.", "ماذا يحدث لبعض عامية الوظائف؟", "مع الوقت يبدأ الجميع باستخدامها، فتصبح عامية عامة."], ["5", "Why do some people not like slang?", "They think too much slang may destroy the English language.", "لماذا لا يحب بعض الناس العامية؟", "يعتقدون أن كثرة العامية قد تدمّر اللغة الإنجليزية."], ["5", "Why do young people break grammar rules?", "To show they are a new generation and different from the past.", "لماذا يكسر الشباب قواعد اللغة؟", "ليظهروا أنهم جيل جديد ومختلف عن السابق."], ["5", "What does \"my bad\" mean? Why is it wrong?", "It means \"it's my mistake.\" It is bad grammar; correct is \"my mistake.\"", "ماذا تعني \"my bad\"؟ ولماذا هي خطأ؟", "تعني \"غلطتي\". قواعدها خاطئة، والصحيح \"my mistake\"."], ["5", "Where should we NOT use slang?", "In formal speeches and in academic essays.", "أين يجب ألا نستخدم العامية؟", "في الخطابات الرسمية وفي المقالات الأكاديمية."], ["5", "Is slang used more in speaking or writing?", "In speaking.", "هل تُستخدم العامية في الكلام أكثر أم في الكتابة؟", "في الكلام."], ["6", "What is the speaker's last point?", "Languages are living things and always change. Slang helps a language grow.", "ما آخر نقطة قالها المحاضر؟", "اللغات كائنات حية تتغير دائماً، والعامية تساعد اللغة على النمو."], ["6", "Is the speaker's final opinion about slang positive or negative?", "Positive.", "هل رأي المحاضر الأخير عن العامية إيجابي أم سلبي؟", "إيجابي."]], "sections": {"1": ["Part 1: What is slang?", "الجزء 1: ما هي العامية؟"], "2": ["Part 2: Why do people use slang?", "الجزء 2: لماذا يستخدم الناس العامية؟"], "3": ["Part 3: How is slang made?", "الجزء 3: كيف تُصنع العامية؟"], "4": ["Part 4: Why is slang different?", "الجزء 4: لماذا تختلف العامية؟"], "5": ["Part 5: The problem with slang", "الجزء 5: المشكلة مع العامية"], "6": ["Part 6: The ending", "الجزء 6: الخاتمة"]}, "disc": [["Will slang destroy the English language?", "I don't think so. I agree with the speaker. Languages are living things. Slang helps a language grow. But we should not use it in formal writing.", "هل ستدمّر العامية اللغة الإنجليزية؟", "لا أعتقد. أتفق مع المحاضر. اللغات كائنات حية، والعامية تساعد اللغة على النمو. لكن يجب ألا نستخدمها في الكتابة الرسمية."], ["Do you use slang in your language?", "Yes. In Saudi Arabic we say \"فله\" to mean everything is fine. We also borrow English words like \"okay.\" This is the third way the speaker talked about: borrowing.", "هل تستخدم العامية في لغتك؟", "نعم. في اللهجة السعودية نقول \"فله\" يعني كل شيء تمام. ونستعير كلمات إنجليزية مثل \"أوكي\". وهذه الطريقة الثالثة التي ذكرها المحاضر: الاستعارة."], ["Is it OK to use slang at work?", "It depends. With friends at work, it is OK. It shows we are friendly. But with a manager or a client in a formal meeting, it is better not to use it.", "هل من المقبول استخدام العامية في العمل؟", "يعتمد. مع الزملاء لا بأس، لأنها تُظهر أننا ودودون. لكن مع المدير أو العميل في اجتماع رسمي، الأفضل ألا نستخدمها."], ["Should students use slang in essays?", "No. Slang is for speaking, not for academic writing. Teachers do not accept it in essays.", "هل يجب أن يستخدم الطلاب العامية في المقالات؟", "لا. العامية للكلام وليست للكتابة الأكاديمية، والمعلمون لا يقبلونها في المقالات."], ["Why do young people like slang?", "Because it makes them feel part of a group. It also shows they are a new generation.", "لماذا يحب الشباب العامية؟", "لأنها تجعلهم يشعرون أنهم جزء من مجموعة، وتُظهر أنهم جيل جديد."]], "words": [["slang", "عامية"], ["informal", "غير رسمي"], ["formal", "رسمي"], ["peer group", "مجموعة الأصدقاء"], ["workplace", "مكان العمل"], ["casual", "عفوي / مرتاح"], ["borrow", "يستعير"], ["region", "منطقة"], ["occupation", "مهنة / وظيفة"], ["generation", "جيل"], ["grammar", "قواعد اللغة"], ["controversial", "مُختلَف عليه"], ["wired", "متحمس زيادة"], ["bling bling", "مجوهرات لامعة"], ["my bad", "غلطتي"], ["y'all", "يا جماعة"]], "phrases": [["In my opinion…", "برأيي…"], ["I agree with the speaker that…", "أتفق مع المحاضر أن…"], ["I don't agree because…", "لا أتفق لأن…"], ["For example…", "على سبيل المثال…"], ["On the other hand…", "من ناحية أخرى…"], ["It depends.", "يعتمد."], ["That's a good point, but…", "نقطة جيدة، لكن…"]]};
+const PLAY='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+const STOP='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>';
+const synth = window.speechSynthesis;
+let rate = 0.9, voices = [], current = null;
+try{ const r = parseFloat(localStorage.getItem('rate')); if(r) rate = r; }catch(e){}
+if(!synth){ document.getElementById('warn').style.display='block'; }
+
+function loadVoices(){ voices = synth ? synth.getVoices() : []; }
+loadVoices(); if(synth) synth.onvoiceschanged = loadVoices;
+function pickVoice(lang){
+  const list = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith(lang));
+  const pref = lang==='en' ? ['Samantha','Google US English','Microsoft Aria','Microsoft Jenny','en-US'] : ['ar-SA','Maged','Google','Microsoft'];
+  for(const p of pref){ const v = list.find(v => v.name.includes(p) || v.lang===p); if(v) return v; }
+  return list[0] || null;
+}
+function clearOn(){ document.querySelectorAll('.play.on').forEach(b=>{b.classList.remove('on');b.innerHTML=PLAY}); document.querySelectorAll('.speaking').forEach(e=>e.classList.remove('speaking')); }
+function speakSeq(items, btn, box){
+  if(!synth) return;
+  const same = current === btn;
+  synth.cancel(); clearOn(); current = null;
+  if(same) return;
+  current = btn;
+  if(btn){ btn.classList.add('on'); btn.innerHTML = STOP; }
+  if(box) box.classList.add('speaking');
+  items.forEach((it,i)=>{
+    const u = new SpeechSynthesisUtterance(it.text);
+    u.lang = it.lang==='ar' ? 'ar-SA' : 'en-US';
+    const v = pickVoice(it.lang); if(v) u.voice = v;
+    u.rate = it.lang==='ar' ? Math.min(1, rate+0.1) : rate;
+    if(i===items.length-1){ u.onend = u.onerror = ()=>{ if(current===btn){ clearOn(); current=null; } }; }
+    synth.speak(u);
+  });
+}
+function btn(cls){ const b=document.createElement('button'); b.className='play '+(cls||''); b.innerHTML=PLAY; return b; }
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"([^"]*)"/g,'“$1”').replace(/'/g,'’'); }
+function speakable(s){ return s.replace(/["“”]/g,''); }
+
+function row(kind, tagText, en, ar){
+  const r = document.createElement('div'); r.className='row '+kind;
+  const b = btn(); b.setAttribute('aria-label','Play: '+en);
+  const t = document.createElement('div'); t.className='txt';
+  t.innerHTML = `<div class="reveal-wrap"><div class="tag">${tagText}</div><div class="en-text">${esc(en)}</div></div>`;
+  b.onclick = ()=> speakSeq([{text:speakable(en),lang:'en'}], b, r);
+  if(ar){
+    const a = document.createElement('div'); a.className='ar-text';
+    const sb = btn('small'); sb.setAttribute('aria-label','استمع بالعربي');
+    sb.onclick = ()=> speakSeq([{text:speakable(ar),lang:'ar'}], sb, r);
+    a.innerHTML = `<span>${esc(ar)}</span>`; a.appendChild(sb);
+    t.querySelector('.reveal-wrap').appendChild(a);
+  }
+  if(kind==='a'){ t.querySelector('.reveal-wrap').onclick = ()=> r.classList.add('shown'); }
+  r.append(t,b);
+  return r;
+}
+function card(n, qe, ae, qa, aa, qLabel){
+  const c = document.createElement('div'); c.className='card';
+  c.appendChild(row('q', qLabel+n, qe, qa));
+  c.appendChild(row('a', 'Answer', ae, aa));
+  const both = document.createElement('button'); both.className='both'; both.textContent='استمع للسؤال والجواب';
+  both.onclick = ()=>{ c.querySelector('.a').classList.add('shown'); speakSeq([{text:speakable(qe),lang:'en'},{text:speakable(ae),lang:'en'}], both, c); };
+  c.appendChild(both);
+  return c;
+}
+function section(id, ar, en, note){
+  const s = document.createElement('section'); s.id = id;
+  s.innerHTML = `<h2><span>${ar}</span><span class="en">${en}</span></h2>` + (note?`<p class="note">${note}</p>`:'');
+  document.getElementById('main').appendChild(s);
+  const a = document.createElement('a'); a.href='#'+id; a.textContent = ar.replace(/^الجزء \d: /,'');
+  document.getElementById('tabs').appendChild(a);
+  return s;
+}
+
+let cur=null, sec=null, n=0;
+DATA.qa.forEach(([s,qe,ae,qa,aa])=>{
+  if(s!==cur){ cur=s; const [en,ar]=DATA.sections[s]; sec = section('part'+s, ar, en); }
+  n++; sec.appendChild(card(n,qe,ae,qa,aa,'Question '));
+});
+const d = section('discussion','أسئلة النقاش','Discussion','قل رأيك، ثم السبب، ثم مثال.');
+DATA.disc.forEach(([qe,ae,qa,aa],i)=> d.appendChild(card(i+1,qe,ae,qa,aa,'Discussion ')));
+function listSection(id, ar, en, items){
+  const s = section(id, ar, en);
+  const c = document.createElement('div'); c.className='card list'; s.appendChild(c);
+  items.forEach(([e,a])=>{
+    const r = document.createElement('div'); r.className='row';
+    const b = btn(); b.setAttribute('aria-label','Play: '+e);
+    b.onclick = ()=> speakSeq([{text:speakable(e).replace(/…/g,''),lang:'en'}], b, r);
+    r.innerHTML = `<div class="txt"><div class="en-text">${esc(e)}</div><div class="ar-plain">${esc(a)}</div></div>`;
+    r.appendChild(b); c.appendChild(r);
+  });
+}
+listSection('phrases','عبارات النقاش','Useful phrases', DATA.phrases);
+listSection('words','كلمات مهمة','Key words', DATA.words);
+
+// controls
+document.querySelectorAll('.seg button').forEach(b=>{
+  b.setAttribute('aria-pressed', String(parseFloat(b.dataset.rate)===rate));
+  b.onclick=()=>{ rate=parseFloat(b.dataset.rate); try{localStorage.setItem('rate',rate)}catch(e){}
+    document.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); };
+});
+const tAr=document.getElementById('tAr'), tHide=document.getElementById('tHide');
+tAr.onclick=()=>{ const on=tAr.getAttribute('aria-pressed')!=='true'; tAr.setAttribute('aria-pressed',on); document.body.classList.toggle('no-ar',!on); };
+tHide.onclick=()=>{ const on=tHide.getAttribute('aria-pressed')!=='true'; tHide.setAttribute('aria-pressed',on); document.body.classList.toggle('hide-a',on);
+  document.querySelectorAll('.a.shown').forEach(e=>e.classList.remove('shown')); };
+document.getElementById('tStop').onclick=()=>{ if(synth) synth.cancel(); clearOn(); current=null; };
+</script>
+</body>
+</html>
